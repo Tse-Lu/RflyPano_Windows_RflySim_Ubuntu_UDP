@@ -1,0 +1,9 @@
+<launch>
+   <arg name="ImageWidth" default="1280" />
+   <arg name="ImageHeight" default="640" />
+   <node pkg="rflysim_4fisheye_2_pano_pkg" type="pano_node" name="pano_node" output="screen">
+        <param name="ImageWidth" value="$(arg ImageWidth)"/>
+        <param name="ImageHeight" value="$(arg ImageHeight)"/>
+        <param name="image_transport" value="compressed" />
+   </node>
+</launch>

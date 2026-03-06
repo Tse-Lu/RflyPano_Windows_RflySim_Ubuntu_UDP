@@ -1,0 +1,37 @@
+<launch>
+   <include file="$(find rflysim_ros_pkg)/launch/cameras.launch">
+        <arg name="camera_id" value="RightFront"/>
+        <arg name="port" value="9999"/>
+        <arg name="img_width" value="640"/>
+        <arg name="img_height" value="640"/>
+        <arg name="img_channel" value="3"/>
+   </include>
+   <include file="$(find rflysim_ros_pkg)/launch/cameras.launch">
+        <arg name="camera_id" value="RightBack"/>
+        <arg name="port" value="10000"/>
+        <arg name="img_width" value="640"/>
+        <arg name="img_height" value="640"/>
+        <arg name="img_channel" value="3"/>
+   </include>
+   <include file="$(find rflysim_ros_pkg)/launch/cameras.launch">
+        <arg name="camera_id" value="LeftBack"/>
+        <arg name="port" value="10001"/>
+        <arg name="img_width" value="640"/>
+        <arg name="img_height" value="640"/>
+        <arg name="img_channel" value="3"/>
+   </include>
+   <include file="$(find rflysim_ros_pkg)/launch/cameras.launch">
+        <arg name="camera_id" value="LeftFront"/>
+        <arg name="port" value="10002"/>
+        <arg name="img_width" value="640"/>
+        <arg name="img_height" value="640"/>
+        <arg name="img_channel" value="3"/>
+   </include>
+   <include file="$(find rflysim_ros_pkg)/launch/cameras.launch">
+        <arg name="camera_id" value="Pinhole"/>
+        <arg name="port" value="10003"/>
+        <arg name="img_width" value="640"/>
+        <arg name="img_height" value="640"/>
+        <arg name="img_channel" value="3"/>
+   </include>
+</launch>

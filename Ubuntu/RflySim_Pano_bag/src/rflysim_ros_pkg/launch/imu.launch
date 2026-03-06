@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="rflysim_ros_pkg" type="imu_node" name="imu_node" output="screen">
+        <param name="windows_ip" value="192.168.137.1" />
+        <param name="ubuntu_ip" value="192.168.137.2" /> 
+        <param name="copter_id" value="1" /> 
+    </node>
+</launch>

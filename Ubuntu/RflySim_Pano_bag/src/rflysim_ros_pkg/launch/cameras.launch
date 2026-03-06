@@ -1,0 +1,12 @@
+<launch>
+   <arg name="camera_id" default="RightFront" />
+   <arg name="port" default="9999" />
+   <arg name="img_width" default="640"/>
+   <arg name="img_height" default="640"/>
+   <arg name="img_channel" default="3"/>
+   <node pkg="rflysim_ros_pkg" type="img_node" name="img_node_$(arg camera_id)" output="screen">
+        <param name="camera_id" value="$(arg camera_id)"/>
+        <param name="port" value="$(arg port)"/>
+        <param name="image_transport" value="compressed" />
+   </node>
+</launch>
