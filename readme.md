@@ -1,5 +1,7 @@
 Communication between RflySim in Windows and Ubuntu in NVIDIA Jetson NX by UDP. Images and IMU data provided by RflySim are used by NX.
-![overview](./img/overview.png)
+
+Click and watch the following example:
+[![watch the example](./img/overview.png)](https://www.youtube.com/watch?v=y5ORxYG_ocE)
 
 # Usage
 
