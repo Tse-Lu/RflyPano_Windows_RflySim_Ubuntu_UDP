@@ -17,6 +17,7 @@ In `Ubuntu/`
 2. Run `roslaunch rflysim_ros_pkg four_fisheye.launch` to get and publish the images (fisheye (`/camera/LeftBack`,`/camera/LeftFront`, `/camera/RightBack`, `/camera/RightFront`) and pinhole (`/camera/Pinhole`)).
 3. Run `roslaunch rflysim_ros_pkg imu.launch` to get and publish the IMU data (`/imu`).
 4. Run `roslaunch rflysim_4fisheye_2_pano_pkg four_fisheye_2_pano.launch` to stitch and publish the panoramic images (`/panorama`).
+(2-4: `./RflySimTest.sh` )
 5. The timestamps of images and IMU data are time relative to the time origin of RflySim platform. 
 
 # Warning
