@@ -1,12 +1,68 @@
 #include <ros/ros.h>
-#include <cv_bridge/cv_bridge.h>
-#include <image_transport/image_transport.h>
+#include <sensor_msgs/Image.h>
+#include <sensor_msgs/CompressedImage.h>
+#include <sensor_msgs/image_encodings.h>
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 #include <vector>
 #include <cmath>
+#include <cstring>
 
 #include "cam_params.h"
+
+// Manual sensor_msgs::Image <-> cv::Mat conversion (replaces cv_bridge so the
+// node can use a single, self-contained OpenCV version without ABI conflicts).
+inline cv::Mat rosImageToBgr(const sensor_msgs::ImageConstPtr& msg)
+{
+    cv::Mat out;
+    if (msg->encoding == sensor_msgs::image_encodings::BGR8)
+    {
+        cv::Mat(msg->height, msg->width, CV_8UC3,
+                const_cast<uint8_t*>(msg->data.data()), msg->step).copyTo(out);
+    }
+    else if (msg->encoding == sensor_msgs::image_encodings::RGB8)
+    {
+        cv::Mat tmp(msg->height, msg->width, CV_8UC3,
+                    const_cast<uint8_t*>(msg->data.data()), msg->step);
+        cv::cvtColor(tmp, out, cv::COLOR_RGB2BGR);
+    }
+    else if (msg->encoding == sensor_msgs::image_encodings::MONO8)
+    {
+        cv::Mat tmp(msg->height, msg->width, CV_8UC1,
+                    const_cast<uint8_t*>(msg->data.data()), msg->step);
+        cv::cvtColor(tmp, out, cv::COLOR_GRAY2BGR);
+    }
+    else
+    {
+        ROS_WARN_STREAM("Unsupported image encoding '" << msg->encoding << "', treating as BGR8.");
+        cv::Mat(msg->height, msg->width, CV_8UC3,
+                const_cast<uint8_t*>(msg->data.data()), msg->step).copyTo(out);
+    }
+    return out;
+}
+
+inline sensor_msgs::Image bgrToRosImage(const std_msgs::Header& header, const cv::Mat& bgr)
+{
+    sensor_msgs::Image msg;
+    msg.header = header;
+    msg.height = bgr.rows;
+    msg.width = bgr.cols;
+    msg.encoding = sensor_msgs::image_encodings::BGR8;
+    msg.is_bigendian = 0;
+    msg.step = static_cast<uint32_t>(bgr.cols * 3);
+    msg.data.resize(static_cast<size_t>(msg.step) * bgr.rows);
+    if (bgr.isContinuous())
+    {
+        std::memcpy(msg.data.data(), bgr.data, msg.data.size());
+    }
+    else
+    {
+        for (int r = 0; r < bgr.rows; ++r)
+            std::memcpy(msg.data.data() + static_cast<size_t>(r) * msg.step,
+                        bgr.ptr(r), msg.step);
+    }
+    return msg;
+}
 
 class RflyPanoramaStitcher {
 private:
@@ -81,6 +137,7 @@ public:
     }
 
     ros::Publisher pub_pano_img;
+    ros::Publisher pub_pano_compressed_img;
 
     // vector << right_front << right_back << left_back << left_front
     cv::Mat stitch(const std::vector<cv::Mat>& fisheye_imgs) {
