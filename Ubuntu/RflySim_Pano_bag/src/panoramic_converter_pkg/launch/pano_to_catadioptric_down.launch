@@ -1,0 +1,23 @@
+<launch>
+  <arg name="input_topic"   default="/panorama"/>
+  <arg name="output_topic"  default="/catadioptric/down"/>
+  <arg name="output_width"  default="640"/>
+  <arg name="output_height" default="640"/>
+  <arg name="pano_width"    default="1280"/>
+  <arg name="pano_height"   default="640"/>
+
+  <arg name="fov_deg"        default="90.0"/>
+  <arg name="blind_spot_deg" default="20.0"/>
+
+  <node name="pano_to_catadioptric_down" pkg="panoramic_converter" type="pano_to_catadioptric" output="screen">
+    <param name="input_topic"     value="$(arg input_topic)"/>
+    <param name="output_topic"    value="$(arg output_topic)"/>
+    <param name="output_width"    value="$(arg output_width)"/>
+    <param name="output_height"   value="$(arg output_height)"/>
+    <param name="pano_width"      value="$(arg pano_width)"/>
+    <param name="pano_height"     value="$(arg pano_height)"/>
+    <param name="fov_deg"         value="$(arg fov_deg)"/>
+    <param name="blind_spot_deg"  value="$(arg blind_spot_deg)"/>
+    <param name="direction"       value="down"/>
+  </node>
+</launch>

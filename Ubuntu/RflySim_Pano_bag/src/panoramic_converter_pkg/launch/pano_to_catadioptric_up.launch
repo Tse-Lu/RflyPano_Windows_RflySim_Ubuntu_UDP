@@ -1,0 +1,31 @@
+<launch>
+  <arg name="input_topic"   default="/panorama"/>
+  <arg name="output_topic"  default="/catadioptric/up"/>
+  <arg name="output_width"  default="640"/>
+  <arg name="output_height" default="640"/>
+  <arg name="pano_width"    default="1280"/>
+  <arg name="pano_height"   default="640"/>
+
+  <!-- FOV in zenith-angle direction (deg).
+       Camera boresight = +Z (Up). Ring covers from blind_spot_deg
+       to blind_spot_deg + fov_deg away from zenith.
+       Default 120 deg: from near-zenith down to below horizon. -->
+  <arg name="fov_deg" default="90.0"/>
+
+  <!-- Blind spot at zenith center (deg). Inner edge of ring starts this far
+       from +Z. R_inner = R_outer * blind_spot / (blind_spot + fov).
+       0 = filled disk (no blind spot). -->
+  <arg name="blind_spot_deg" default="20.0"/>
+
+  <node name="pano_to_catadioptric" pkg="panoramic_converter" type="pano_to_catadioptric" output="screen">
+    <param name="input_topic"     value="$(arg input_topic)"/>
+    <param name="output_topic"    value="$(arg output_topic)"/>
+    <param name="output_width"    value="$(arg output_width)"/>
+    <param name="output_height"   value="$(arg output_height)"/>
+    <param name="pano_width"      value="$(arg pano_width)"/>
+    <param name="pano_height"     value="$(arg pano_height)"/>
+    <param name="fov_deg"         value="$(arg fov_deg)"/>
+    <param name="blind_spot_deg"  value="$(arg blind_spot_deg)"/>
+    <param name="direction"       value="up"/>
+  </node>
+</launch>

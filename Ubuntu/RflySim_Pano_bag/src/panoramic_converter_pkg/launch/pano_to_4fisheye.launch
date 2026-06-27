@@ -1,0 +1,29 @@
+<launch>
+  <!-- Input equirectangular panoramic image topic -->
+  <arg name="input_topic" default="/panorama"/>
+
+  <!-- Output fisheye image resolution (each camera, square) -->
+  <arg name="output_width"  default="640"/>
+  <arg name="output_height" default="640"/>
+
+  <!-- Input panoramic image resolution -->
+  <arg name="pano_width"  default="1280"/>
+  <arg name="pano_height" default="640"/>
+
+  <!-- Fisheye camera total FOV in degrees -->
+  <arg name="fov_deg" default="200.0"/>
+
+  <!-- Output topic prefix for four fisheye cameras
+       Topics: <prefix>/front_left/image, <prefix>/front_right/image, etc. -->
+  <arg name="output_topic_prefix" default="/fisheye"/>
+
+  <node name="pano_to_4fisheye" pkg="panoramic_converter" type="pano_to_4fisheye" output="screen">
+    <param name="input_topic"          value="$(arg input_topic)"/>
+    <param name="output_topic_prefix"  value="$(arg output_topic_prefix)"/>
+    <param name="output_width"  value="$(arg output_width)"/>
+    <param name="output_height" value="$(arg output_height)"/>
+    <param name="pano_width"    value="$(arg pano_width)"/>
+    <param name="pano_height"   value="$(arg pano_height)"/>
+    <param name="fov_deg"       value="$(arg fov_deg)"/>
+  </node>
+</launch>
